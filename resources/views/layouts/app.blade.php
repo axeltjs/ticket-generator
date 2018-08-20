@@ -62,21 +62,7 @@
                             <li><a href="{{ route('register') }}">Daftar</a></li>
                         @else
                             
-                        <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    Gudang <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ url('produk?produk=1') }}">Produk</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('produk?produk=0') }}">Bahan</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a href="{{ url('konsumen') }}">Konsumen</a></li>
+                            <li><a href="{{ url('ticket') }}">Upload Ticket</a></li>
 
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
