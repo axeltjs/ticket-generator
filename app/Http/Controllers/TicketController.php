@@ -52,12 +52,10 @@ class TicketController extends Controller
         $file = $request->file('file');
         $extension = $file->getClientOriginalExtension();
         $filename = Auth::user()->id.'-'.md5($request->title);
-        
         # Simpan
         $i = $request->start_num ?? 1;
         $end = $request->end_num;
         $destination_path = base_path() . '/public/uploads/user/';
-
         $request->file('file')->move($destination_path, $filename."-".$i.".".$extension);
         
         Ticket::create([
@@ -70,11 +68,11 @@ class TicketController extends Controller
                 'model_layout'  => $request->model_layout,
             ]);
 
-        for ($a = $i + 1; $a < $end; $a++) {
+        for ($a = $i + 1; $a <= $end; $a++) {
             $b = $a - 1;
             $finished_filename = $filename."-".$a.".".$extension;
             $past_filename = $filename."-".$b.".".$extension;
-            Storage::copy($destination_path.$past_filename, $finished_filename);
+            Storage::disk('upload_path')->copy($past_filename, $finished_filename);
         }
         
         Session::flash("flash_notification", [
