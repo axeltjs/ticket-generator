@@ -18,10 +18,11 @@ class CreateTicketsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
                     ->references('id')
-                    ->on('user');
+                    ->on('users');
             $table->string('title');
             $table->string('picture');
-            $table->integer('start_num');
+            $table->string('extention');
+            $table->integer('start_num')->default(0);
             $table->integer('end_num');
             $table->integer('model_layout');
             $table->timestamps();

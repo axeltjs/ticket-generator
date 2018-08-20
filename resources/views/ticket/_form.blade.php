@@ -1,50 +1,105 @@
-<div class="form-group{{ $errors->has('nama') ? ' has-error' : '' }}">
-	{!! Form::label('nama', 'Nama', ['class'=>'col-md-2 control-label']) !!}
+<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+	{!! Form::label('title', 'Title', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
-		{!! Form::text('nama', null, ['class'=>'form-control']) !!}
-		{!! $errors->first('nama', '<p class="help-block">:message</p>') !!}
+		{!! Form::text('title', null, ['class'=>'form-control']) !!}
+		{!! $errors->first('title', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
 
-<div class="form-group{{ $errors->has('qty') ? ' has-error' : '' }}">
-	{!! Form::label('qty', 'Jumlah', ['class'=>'col-md-2 control-label']) !!}
+<div class="form-group">
+	{!! Form::label('method', 'Counting Method', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
-		{!! Form::number('qty', null, ['class'=>'form-control','min'=>'1']) !!}
-		{!! $errors->first('qty', '<p class="help-block">:message</p>') !!}
+		{!! Form::select('method', ['0' => 'Single','1' => 'Interval'], null, ['class' => 'form-control select2 method', 'onchange' => 'checkMethod(this.value)']) !!}
 	</div>
 </div>
 
-<div class="form-group{{ $errors->has('harga') ? ' has-error' : '' }}">
-	{!! Form::label('harga', 'Harga', ['class'=>'col-md-2 control-label']) !!}
+<div id="start_num" class="form-group{{ $errors->has('start_num') ? ' has-error' : '' }}">
+	{!! Form::label('start_num', 'Start Number', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
-		{!! Form::text('harga', null, ['class'=>'form-control']) !!}
-		{!! $errors->first('harga', '<p class="help-block">:message</p>') !!}
+		{!! Form::number('start_num', null, ['class'=>'form-control']) !!}
+		{!! $errors->first('start_num', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
 
-<div id="produk" class="form-group{{ $errors->has('produk') ? ' has-error' : '' }}">
-	{!! Form::label('produk', 'Jenis Item', ['class'=>'col-md-2 control-label']) !!}
+
+<div id="end_num" class="form-group{{ $errors->has('end_num') ? ' has-error' : '' }}">
+	{!! Form::label('end_num', 'End Number', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
-		{!! Form::select('produk', ['0' => 'Bahan', '1' => 'Produk'], null, ['class'=>'form-control','onchange' => 'check(this.value)']) !!}
-		{!! $errors->first('produk', '<p class="help-block">:message</p>') !!}
+		{!! Form::number('end_num', null, ['class'=>'form-control']) !!}
+		{!! $errors->first('end_num', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
 
-<div id="jenis_produk" class="form-group{{ $errors->has('jenis_produk') ? ' has-error' : '' }}">
-	{!! Form::label('jenis_produk', 'Jenis Produk', ['class'=>'col-md-2 control-label']) !!}
-	<div class="col-md-4">
-		{!! Form::text('jenis_produk', null, ['class'=>'form-control']) !!}
-		{!! $errors->first('jenis_produk', '<p class="help-block">:message</p>') !!}
+<div class="form-group">
+	{!! Form::label('model_layout_header', 'Model Layout', ['class'=>'col-md-2 control-label']) !!}
+	<div class="col-md-3">
+		<label class="radio-inline">
+			{!! Form::radio('model_layout', '1', true, []) !!}
+			<img src="{{ asset('uploads/template/1.png') }}" alt="Pilihan 1">	
+		</label>	
+	</div>
+	<div class="col-md-3">
+		<label class="radio-inline">
+			{!! Form::radio('model_layout', '2', false, []) !!}
+			<img src="{{ asset('uploads/template/2.png') }}" alt="Pilihan 2">		
+		</label>	
+	</div>
+	<div class="col-md-3">
+		<label class="radio-inline">
+			{!! Form::radio('model_layout', '3', false, []) !!}
+			<img src="{{ asset('uploads/template/3.png') }}" alt="Pilihan 3">		
+		</label>	
+	</div>
+	<div class="col-md-2"></div>
+	<div class="col-md-3">
+		<label class="radio-inline">
+			{!! Form::radio('model_layout', '4', false, []) !!}
+			<img src="{{ asset('uploads/template/4.png') }}" alt="Pilihan 4">		
+		</label>	
+	</div>
+	<div class="col-md-3">
+		<label class="radio-inline">
+			{!! Form::radio('model_layout', '5', false, []) !!}
+			<img src="{{ asset('uploads/template/5.png') }}" alt="Pilihan 5">		
+		</label>	
+	</div>
+	<div class="col-md-3">
+		<label class="radio-inline">
+			{!! Form::radio('model_layout', '6', false, []) !!}
+			<img src="{{ asset('uploads/template/6.png') }}" alt="Pilihan 6">		
+		</label>	
+	</div>
+	<div class="col-md-2"></div>
+	<div class="col-md-3">
+		<label class="radio-inline">
+			{!! Form::radio('model_layout', '7', false, []) !!}
+			<img src="{{ asset('uploads/template/7.png') }}" alt="Pilihan 7">		
+		</label>	
+		<small>* Red spot means the spot of the number</small>
+
+	</div>
+	<div class="col-md-3">
+		<label class="radio-inline">
+			{!! Form::radio('model_layout', '8', false, []) !!}
+			<img src="{{ asset('uploads/template/8.png') }}" alt="Pilihan 8">		
+		</label>	
+	</div>
+	<div class="col-md-3">
+		<label class="radio-inline">
+			{!! Form::radio('model_layout', '9', false, []) !!}
+			<img src="{{ asset('uploads/template/9.png') }}" alt="Pilihan 9">		
+		</label>	
 	</div>
 </div>
 
-<div id="lokasi_beli" class="form-group{{ $errors->has('lokasi_beli') ? ' has-error' : '' }}">
-	{!! Form::label('lokasi_beli', 'Lokasi Beli', ['class'=>'col-md-2 control-label']) !!}
+<div class="form-group{{ $errors->has('file') ? ' has-error' : '' }}">
+	{!! Form::label('file', 'Photo', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
-		{!! Form::text('lokasi_beli', null, ['class'=>'form-control']) !!}
-		{!! $errors->first('lokasi_beli', '<p class="help-block">:message</p>') !!}
+		{!! Form::file('file',array('class' => 'form-control')) !!}
+		{!! $errors->first('file', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
+
 
 
 <div class="form-group">

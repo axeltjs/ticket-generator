@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Ticket;
 Use Auth;
-
+use App\Http\Requests\TicketRequest;
+use DB;
+use Session;
+use Storage;
 class TicketController extends Controller
 {
     /**
@@ -36,12 +39,51 @@ class TicketController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * $img = Image::make(public_path($value)); //your image I assume you have in public directory
+     * $img->insert(public_path('watermark.png'), 'bottom-right', 10, 10); //insert watermark in (also from public_directory)
+     * $img->save(public_path($value));
+
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TicketRequest $request)
     {
-        //
+        $file = $request->file('file');
+        $extension = $file->getClientOriginalExtension();
+        $filename = Auth::user()->id.'-'.md5($request->title);
+        
+        # Simpan
+        $i = $request->start_num ?? 1;
+        $end = $request->end_num;
+        $destination_path = base_path() . '/public/uploads/user/';
+
+        $request->file('file')->move($destination_path, $filename."-".$i.".".$extension);
+        
+        Ticket::create([
+                'user_id'       => Auth::user()->id,
+                'title'         => $request->title,
+                'picture'       => $filename,
+                'extention'     => $extension,
+                'start_num'     => $request->start_num ?? 1,
+                'end_num'       => $request->end_num,
+                'model_layout'  => $request->model_layout,
+            ]);
+
+        for ($a = $i + 1; $a < $end; $a++) {
+            $b = $a - 1;
+            $finished_filename = $filename."-".$a.".".$extension;
+            $past_filename = $filename."-".$b.".".$extension;
+            Storage::copy($destination_path.$past_filename, $finished_filename);
+        }
+        
+        Session::flash("flash_notification", [
+                        "level"=>"success",
+                        "message"=>"Ticket has successfuly created!"
+                    ]);
+
+        return redirect('ticket');
+
     }
 
     /**

@@ -26,6 +26,7 @@
         ]) !!};
         window.csrfToken = '<?php echo csrf_token(); ?>';
     </script>
+    @yield('css')
 </head>
 <body>
     <div id="app">

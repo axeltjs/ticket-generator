@@ -1,4 +1,12 @@
 @extends('layouts.app')
+@section('css')
+	<style>
+		img{
+			max-width: 200px;
+			max-height: 150px;
+		}
+	</style>
+@endsection
 	@section('content')
 	<div class="container">
 		<div class="row">
@@ -23,5 +31,18 @@
 @endsection
 
 @section('scripts')
-    
+    <script>
+		var selected_method = $('.method option:selected');
+		$(function(){
+			checkMethod(selected_method.val());
+		});
+
+		function checkMethod(value){
+			if(value == 0){
+				$('#start_num').hide(500);
+			}else{
+				$('#start_num').show(500);
+			}
+		}
+	</script>
 @endsection
