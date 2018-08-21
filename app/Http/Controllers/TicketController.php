@@ -10,6 +10,8 @@ use App\Http\Requests\TicketRequest;
 use DB;
 use Session;
 use Storage;
+use Image;
+
 class TicketController extends Controller
 {
     /**
@@ -49,7 +51,13 @@ class TicketController extends Controller
      */
     public function store(TicketRequest $request)
     {
+        $this->checkStoredData($request);
         $file = $request->file('file');
+
+        $image_sz = getimagesize($file);
+        $width = $image_sz[0];
+        $height = $image_sz[1];
+
         $extension = $file->getClientOriginalExtension();
         $filename = Auth::user()->id.'-'.md5($request->title);
         # Simpan
@@ -73,6 +81,20 @@ class TicketController extends Controller
             $finished_filename = $filename."-".$a.".".$extension;
             $past_filename = $filename."-".$b.".".$extension;
             Storage::disk('upload_path')->copy($past_filename, $finished_filename);
+        }
+
+        for ($a = $i; $a <= $end; $a++) {
+            $finished_filename = $filename."-".$a.".".$extension;
+            $img = Image::make(public_path('uploads/user/'.$finished_filename)); //your image I assume you have in public directory
+         
+            $number = str_split($a);
+            $image_number = [];
+            foreach($number as $num){
+                array_push($image_number, public_path('uploads/number/'.$num.'.png'));
+            }
+
+            $this->manageLayout($img, $image_number, $finished_filename, $width, $height, $request);
+         
         }
         
         Session::flash("flash_notification", [
@@ -126,6 +148,67 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Ticket::findOrFail($id)->delete();
+        Session::flash("flash_notification", [
+                        "level"=>"success",
+                        "message"=>"Ticket has successfuly deleted!"
+                    ]);
+
+        return redirect('ticket');
+
+    }
+
+    public function manageLayout($img, $image_number, $finished_filename, $width, $height, $request)
+    {
+        $sisa_bagi_tinggi = ($height / 2) / 2;
+        $sisa_bagi_lebar  = ($width / 2) / 2;
+        
+        if($request->model_layout == 1){
+            $x = $sisa_bagi_lebar;
+            $y = $sisa_bagi_tinggi;
+        }elseif($request->model_layout == 2){
+            $x = $sisa_bagi_lebar;
+            $y = ($height / 2);
+        }elseif($request->model_layout == 3){
+            $x = $sisa_bagi_lebar;
+            $y = $height - $sisa_bagi_tinggi;
+        }elseif($request->model_layout == 4){
+            $x = $width / 2;
+            $y = $sisa_bagi_tinggi;
+        }elseif($request->model_layout == 5){
+            $x = $width / 2;
+            $y = ($height / 2);            
+        }elseif($request->model_layout == 6){
+            $x = $width / 2;
+            $y = $height - $sisa_bagi_tinggi;
+        }elseif($request->model_layout == 7){
+            $x = $width - $sisa_bagi_lebar;
+            $y = $sisa_bagi_tinggi;
+        }elseif($request->model_layout == 8){
+            $x = $width - $sisa_bagi_lebar;
+            $y = ($height / 2);            
+        }elseif($request->model_layout == 9){
+            $x = $width - $sisa_bagi_lebar;
+            $y = $height - $sisa_bagi_tinggi;
+        }
+
+        foreach ($image_number as $in) {
+            $img->insert($in, 'top-left', $x, $y); //insert watermark in (also from public_directory) // (x, y)
+            $img->save(public_path('uploads/user/'.$finished_filename));
+            $x += 20;
+        }
+    }
+
+    public function checkStoredData($request)
+    {
+        $data = Ticket::where(['user_id' => Auth::user()->id, 'title' => $request->title])->get();
+        if(count($data) > 0){
+            Session::flash("flash_notification", [
+                    "level"=>"danger",
+                    "message"=>"Ticket title already exist!"
+                ]);
+            return redirect()->back();
+        }
+        
     }
 }

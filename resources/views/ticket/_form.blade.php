@@ -75,8 +75,8 @@
 			{!! Form::radio('model_layout', '7', false, []) !!}
 			<img src="{{ asset('uploads/template/7.png') }}" alt="Pilihan 7">		
 		</label>	
+		<br>
 		<small>* Red spot means the spot of the number</small>
-
 	</div>
 	<div class="col-md-3">
 		<label class="radio-inline">

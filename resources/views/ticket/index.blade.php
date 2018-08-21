@@ -40,7 +40,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->title }}</td>
-                                <td>{{ $item->total }}</td>
+                                <td>{{ $item->total_formatted }}</td>
                                 <td>
                                     <a data-confirm="Are you sure?" data-token="{{ csrf_token() }}" data-method="DELETE" href="{{ url('ticket/'.$item->id) }}" class="btn btn-danger"> Delete</a>
                                     <a href="#">Print</a>

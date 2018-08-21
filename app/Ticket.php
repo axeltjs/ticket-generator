@@ -19,8 +19,8 @@ class Ticket extends Model
         'end_num',
         'model_layout',
     ];
-    public function getTotalAttribute()
+    public function getTotalFormattedAttribute()
     {
-        return $this->getAttribute('num_end') - $this->getAttribute('num_start');
+        return $this->getAttribute('end_num') - $this->getAttribute('start_num') + 1;
     }
 }
