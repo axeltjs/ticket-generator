@@ -21,7 +21,7 @@ class CreateTicketsTable extends Migration
                     ->on('users');
             $table->string('title');
             $table->string('picture');
-            $table->string('extention');
+            $table->string('extension');
             $table->integer('start_num')->default(0);
             $table->integer('end_num');
             $table->integer('model_layout');

@@ -17,4 +17,5 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::resource('ticket', 'TicketController');
+Route::get('ticket/{id}/print','TicketController@nonPDF');
 Route::get('/home', 'HomeController@index')->name('home');

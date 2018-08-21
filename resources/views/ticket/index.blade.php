@@ -43,7 +43,8 @@
                                 <td>{{ $item->total_formatted }}</td>
                                 <td>
                                     <a data-confirm="Are you sure?" data-token="{{ csrf_token() }}" data-method="DELETE" href="{{ url('ticket/'.$item->id) }}" class="btn btn-danger"> Delete</a>
-                                    <a href="#">Print</a>
+                                    <a target="__blank" class="btn btn-success" href="{{ url('ticket/'.$item->id) }}">Print PDF</a>
+                                    <a target="__blank" class="btn btn-info" href="{{ url('ticket/'.$item->id.'/print') }}">Print</a>
                                 </td>
                             </tr>
                             @endforeach

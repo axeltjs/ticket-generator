@@ -14,7 +14,7 @@ class Ticket extends Model
         'user_id',
         'title',
         'picture',
-        'extention',
+        'extension',
         'start_num',
         'end_num',
         'model_layout',

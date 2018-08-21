@@ -11,6 +11,7 @@ use DB;
 use Session;
 use Storage;
 use Image;
+use PDF;
 
 class TicketController extends Controller
 {
@@ -70,7 +71,7 @@ class TicketController extends Controller
                 'user_id'       => Auth::user()->id,
                 'title'         => $request->title,
                 'picture'       => $filename,
-                'extention'     => $extension,
+                'extension'     => $extension,
                 'start_num'     => $request->start_num ?? 1,
                 'end_num'       => $request->end_num,
                 'model_layout'  => $request->model_layout,
@@ -114,7 +115,20 @@ class TicketController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Ticket::findOrFail($id);
+        $filename = Auth::user()->id.'-'.md5($data->title);
+
+        $pdf = \PDF::loadView('ticket.pdf', compact('data','filename'))->setPaper('a4', 'portrait')
+            ->setWarnings(false);
+        return @$pdf->stream(date('d-m-Y') . '-ticket-genrator.pdf');
+        // return view('ticket.pdf',compact('data','filename'));
+    }
+
+    public function nonPDF($id)
+    {
+        $data = Ticket::findOrFail($id);
+        $filename = Auth::user()->id.'-'.md5($data->title);
+        return view('ticket.show',compact('data','filename'));
     }
 
     /**
@@ -162,7 +176,7 @@ class TicketController extends Controller
     {
         $sisa_bagi_tinggi = ($height / 2) / 2;
         $sisa_bagi_lebar  = ($width / 2) / 2;
-        
+
         if($request->model_layout == 1){
             $x = $sisa_bagi_lebar;
             $y = $sisa_bagi_tinggi;
@@ -191,7 +205,10 @@ class TicketController extends Controller
             $x = $width - $sisa_bagi_lebar;
             $y = $height - $sisa_bagi_tinggi;
         }
-
+        
+        $x = (int)$x;
+        $y = (int)$y;
+        
         foreach ($image_number as $in) {
             $img->insert($in, 'top-left', $x, $y); //insert watermark in (also from public_directory) // (x, y)
             $img->save(public_path('uploads/user/'.$finished_filename));
