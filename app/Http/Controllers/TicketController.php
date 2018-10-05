@@ -120,7 +120,7 @@ class TicketController extends Controller
 
         $pdf = \PDF::loadView('ticket.pdf', compact('data','filename'))->setPaper('a4', 'portrait')
             ->setWarnings(false);
-        return @$pdf->stream(date('d-m-Y') . '-ticket-genrator.pdf');
+        return @$pdf->stream(date('d-m-Y') . '-ticket-genrator-'.$data->title.'.pdf');
         // return view('ticket.pdf',compact('data','filename'));
     }
 

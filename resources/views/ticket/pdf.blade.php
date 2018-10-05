@@ -11,7 +11,7 @@
     <?php 
         $finished_filename = $filename."-".$i.".".$data->extension;
     ?>
-    <img style="margin:10px" src="{{ public_path('/uploads/user/'.$finished_filename) }}">
+    <img style="margin:10px; max-width:325px; max-height:165px;" src="{{ public_path('/uploads/user/'.$finished_filename) }}">
     @endfor
 </body>
 </html>
